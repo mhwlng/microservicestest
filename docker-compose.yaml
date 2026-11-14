@@ -1,0 +1,73 @@
+name: microservicestest
+
+services:
+  micro-services-db:
+    image: postgres:latest
+    container_name: micro-services-db
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: admin_user
+      POSTGRES_DB: db 
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql
+    networks:
+      - internal
+
+  task-service:
+    image: task-service
+    container_name: task-service
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://micro-services-db:5432/db
+      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_DATASOURCE_USERNAME: admin_user
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_SQL_INIT_MODE: always
+#   ports:
+#     - "4000:4000" 
+    restart: unless-stopped
+    depends_on:
+      - micro-services-db
+    networks:
+      - internal
+
+  auth-service:
+    image: auth-service
+    container_name: auth-service
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://micro-services-db:5432/db
+      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_DATASOURCE_USERNAME: admin_user
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_SQL_INIT_MODE: always
+      JWT_SECRET: c2e98e7643dbece36dd18964a46757ea9301036b6dddd31f6625b9d559508406
+#   ports:
+#     - "4005:4005" 
+    restart: unless-stopped
+    depends_on:
+      - micro-services-db
+    networks:
+      - internal
+
+  api-gateway:
+    image: api-gateway
+    container_name: api-gateway
+    environment:
+      AUTH_SERVICE_URL: http://auth-service:4005/
+    ports:
+      - "4004:4004" 
+    restart: unless-stopped
+    depends_on:
+      - micro-services-db
+      - auth-service
+      - task-service
+    networks:
+      - internal
+
+networks:
+  internal:
+    driver: bridge
+
+volumes:
+  db-data:

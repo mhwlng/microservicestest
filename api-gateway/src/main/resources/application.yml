@@ -1,0 +1,48 @@
+server:
+  port: 4004 # Gateway listens on port 4004
+
+auth:
+  service:
+#   url: http://127.0.0.1:4005/
+    url: http://auth-service:4005/
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      server:
+        webflux:
+          routes:
+            - id: tasks-route
+ #             uri: http://127.0.0.1:4000
+              uri: http://task-service:4000
+              predicates:
+                - Path=/api/tasks/**
+              filters:
+                - JwtValidation
+                - RewritePath=/api/tasks,/api/v1/tasks
+
+            - id: api-docs-tasks-route
+#             uri: http://127.0.0.1:4000
+              uri: http://task-service:4000
+              predicates:
+                - Path=/api-docs/tasks
+              filters:
+                - RewritePath=/api-docs/tasks,/v3/api-docs
+
+            - id: auth-service-route
+#             uri: http://127.0.0.1:4005
+              uri: http://auth-service:4005
+              predicates:
+                - Path=/auth/**
+              filters:
+                - StripPrefix=1
+
+            - id: api-docs-auth-route
+#             uri: http://127.0.0.1:4005
+              uri: http://auth-service:4005
+              predicates:
+                - Path=/api-docs/auth
+              filters:
+                - RewritePath=/api-docs/auth,/v3/api-docs
