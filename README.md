@@ -29,6 +29,13 @@ There are 4 services, each with their own docker container:
 
   Postgres database, only accessible inside docker via micro-services-db:5432
 
+---
+
+### Note that sensitive information like JWT secret, postgres user/password are only included for testing. 
+
+### Normally these would not be part of a github repository (e.g. docker-compose.xml, application.properties)
+
+---
 
 ### Assuming, that the docker server runs on localhost:
 
