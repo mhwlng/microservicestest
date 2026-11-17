@@ -1,20 +1,18 @@
-FROM maven:3.9-eclipse-temurin-25 AS builder
+FROM maven:3.10-eclipse-temurin-25-alpine AS builder
 
 WORKDIR /app
 
 COPY pom.xml .
-
 RUN mvn dependency:go-offline -B
 
 COPY src ./src
+RUN mvn clean package -B -DskipTests
 
-RUN mvn clean package
-
-FROM eclipse-temurin:25-jre AS runner
+FROM eclipse-temurin:25-jre-alpine AS runner
 
 WORKDIR /app
 
-COPY --from=builder ./app/target/task-service-0.0.1-SNAPSHOT.jar ./app.jar
+COPY --from=builder /app/target/task-service-0.0.1-SNAPSHOT.jar ./app.jar
 
 EXPOSE 4000
 
