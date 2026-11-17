@@ -29,6 +29,13 @@ There are 4 services, each with their own docker container:
 
   Postgres database, only accessible inside docker via micro-services-db:5432
 
+There is also an end-to-end integration test project 
+
+- integration-tests
+
+  This is a standalone project, using rest-assured 5 and junit 6.
+  Use 'test runner for java vscode extension' to run tests.
+
 ---
 
 ### Note that sensitive information like JWT secret, postgres user/password are only included for testing. 
