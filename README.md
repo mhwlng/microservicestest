@@ -33,7 +33,7 @@ There are 4 services, each with their own docker container:
 
 ### Note that sensitive information like JWT secret, postgres user/password are only included for testing. 
 
-### Normally these would not be part of a github repository (e.g. docker-compose.xml, application.properties)
+### Normally these would not be part of a github repository (e.g. hardcoded account in integration tests, docker-compose.xml, application.properties)
 
 ---
 
