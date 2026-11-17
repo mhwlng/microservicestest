@@ -3,8 +3,7 @@ server:
 
 auth:
   service:
-#   url: http://127.0.0.1:4005/
-    url: http://auth-service:4005/
+   url: http://127.0.0.1:4005/
 
 springdoc:
   api-docs:
@@ -13,6 +12,8 @@ springdoc:
     enabled: false
 
 spring:
+  profiles:
+    active: dev
   application:
     name: api-gateway
   cloud:
@@ -21,8 +22,7 @@ spring:
         webflux:
           routes:
             - id: tasks-route
- #             uri: http://127.0.0.1:4000
-              uri: http://task-service:4000
+              uri: http://127.0.0.1:4000
               predicates:
                 - Path=/api/tasks/**
               filters:
@@ -30,26 +30,22 @@ spring:
                 - RewritePath=/api/tasks,/api/v1/tasks
 
             - id: auth-service-route
-#             uri: http://127.0.0.1:4005
-              uri: http://auth-service:4005
+              uri: http://127.0.0.1:4005
               predicates:
                 - Path=/auth/**
               filters:
                 - StripPrefix=1
 
-# for testing outside docker
-#            - id: api-docs-tasks-route
-#             uri: http://127.0.0.1:4000
-#              uri: http://task-service:4000
-#              predicates:
-#                - Path=/api-docs/tasks
-#              filters:
-#                - RewritePath=/api-docs/tasks,/v3/api-docs
+            - id: api-docs-tasks-route
+              uri: http://127.0.0.1:4000
+              predicates:
+                - Path=/api-docs/tasks
+              filters:
+                - RewritePath=/api-docs/tasks,/v3/api-docs
 
-#            - id: api-docs-auth-route
-#             uri: http://127.0.0.1:4005
-#              uri: http://auth-service:4005
-#              predicates:
-#                - Path=/api-docs/auth
-#              filters:
-#                - RewritePath=/api-docs/auth,/v3/api-docs
+            - id: api-docs-auth-route
+              uri: http://127.0.0.1:4005
+              predicates:
+                - Path=/api-docs/auth
+              filters:
+                - RewritePath=/api-docs/auth,/v3/api-docs

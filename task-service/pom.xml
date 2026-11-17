@@ -111,7 +111,7 @@
     <profile>
         <id>no-tests</id>
         <properties>
-            <maven.mhwlng.skip>true</maven.mhwlng.skip>
+            <maven.test.skip>true</maven.test.skip>
         </properties>
     </profile>
     <profile>

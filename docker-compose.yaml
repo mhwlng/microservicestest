@@ -24,6 +24,7 @@ services:
       SPRING_DATASOURCE_USERNAME: admin_user
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
       SPRING_SQL_INIT_MODE: always
+      SPRING_PROFILES_ACTIVE: prod
 #   ports:
 #     - "4000:4000" 
     restart: unless-stopped
@@ -42,6 +43,7 @@ services:
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
       SPRING_SQL_INIT_MODE: always
       JWT_SECRET: c2e98e7643dbece36dd18964a46757ea9301036b6dddd31f6625b9d559508406
+      SPRING_PROFILES_ACTIVE: prod
 #   ports:
 #     - "4005:4005" 
     restart: unless-stopped
@@ -55,6 +57,7 @@ services:
     container_name: api-gateway
     environment:
       AUTH_SERVICE_URL: http://auth-service:4005/
+      SPRING_PROFILES_ACTIVE: prod
     ports:
       - "4004:4004" 
     restart: unless-stopped

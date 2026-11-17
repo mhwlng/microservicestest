@@ -59,4 +59,19 @@
     </plugins>
   </build>
 
+  <profiles>
+    <profile>
+        <id>no-tests</id>
+        <properties>
+            <maven.test.skip>true</maven.test.skip>
+        </properties>
+    </profile>
+    <profile>
+        <id>prod</id>
+        <properties>
+            <spring-boot.run.profiles>prod</spring-boot.run.profiles>
+        </properties>
+    </profile>    
+  </profiles>
+
 </project>
