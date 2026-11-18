@@ -87,9 +87,9 @@ services:
       micro-services-db:
         condition: service_healthy
       auth-service:
-        condition: service_started
+        condition: service_healthy
       task-service:
-        condition: service_started
+        condition: service_healthy
 
     healthcheck:
       test: ["CMD-SHELL", "wget -qO- http://api-gateway:4004/actuator/health || exit 1"]
