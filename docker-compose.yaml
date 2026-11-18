@@ -38,6 +38,11 @@ services:
     depends_on:
       micro-services-db:
         condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://task-service:4000/actuator/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
 
     networks:
       - internal
@@ -60,6 +65,11 @@ services:
     depends_on:
       micro-services-db:
         condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://auth-service:4005/actuator/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
     networks:
       - internal
 
@@ -80,6 +90,12 @@ services:
         condition: service_started
       task-service:
         condition: service_started
+
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://api-gateway:4004/actuator/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
     networks:
       - internal
 
