@@ -3,6 +3,7 @@ package com.mhwlng.taskservice.controller;
 import com.mhwlng.taskservice.dto.TaskRequestDTO;
 import com.mhwlng.taskservice.dto.TaskResponseDTO;
 import com.mhwlng.taskservice.entity.Task;
+import com.mhwlng.taskservice.mapper.TaskMapper;
 import com.mhwlng.taskservice.service.TaskService;
 import jakarta.validation.Valid;
 //import org.apache.coyote.Response;
@@ -33,11 +34,13 @@ import java.util.Map;
 public class TaskController {
 
     private final TaskService taskService;
+    private final TaskMapper taskMapper;
 
     //Constructor Injection
     //@Autowired
-    public TaskController(TaskService taskService) {
+    public TaskController(TaskService taskService,TaskMapper taskMapper) {
         this.taskService = taskService;
+        this.taskMapper = taskMapper;
     }
 
     @Operation(summary = "Get all tasks")
@@ -56,13 +59,7 @@ public class TaskController {
 
         List<TaskResponseDTO> tasks = taskPage.getContent()
                 .stream()
-                .map(task -> new TaskResponseDTO(
-                        task.getId(),
-                        task.getTitle(),
-                        task.getDescription(),
-                        task.getCompleted(),
-                        task.getCreatedAt()
-                      ))
+                .map(task -> taskMapper.toResponse(task))
                 .toList();
 
         Map<String, Object> response = new HashMap<>();
@@ -150,13 +147,7 @@ public class TaskController {
 
         List<TaskResponseDTO> tasks = taskPage.getContent()
                 .stream()
-                .map(task -> new TaskResponseDTO(
-                        task.getId(),
-                        task.getTitle(),
-                        task.getDescription(),
-                        task.getCompleted(),
-                        task.getCreatedAt()                        
-                      ))
+                .map(task -> taskMapper.toResponse(task))
                 .toList();
 
         Map<String, Object> response = new HashMap<>();
