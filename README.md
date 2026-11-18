@@ -35,6 +35,8 @@ There is also an end-to-end integration test project
 
   This is a standalone project, using rest-assured 5 and junit 6.
   Use 'test runner for java vscode extension' to run tests.
+   
+  this command line runs the tests: mvn -f integration-tests/pom.xml test
 
 ---
 
