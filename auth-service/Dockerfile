@@ -16,4 +16,7 @@ COPY --from=builder /app/target/auth-service-0.0.1-SNAPSHOT.jar ./app.jar
 
 EXPOSE 4005
 
+#fix for java4shell
+ENV JDK_JAVA_OPTIONS="-XX:-UseBASE64Intrinsics"
+
 ENTRYPOINT ["java", "-Dspring.profiles.active=prod", "-jar", "app.jar"]
