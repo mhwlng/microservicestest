@@ -2,26 +2,33 @@ name: microservicestest
 
 services:
   micro-services-db:
+    env_file: ".env"
     image: postgres:latest
     container_name: micro-services-db
     environment:
-      POSTGRES_PASSWORD: password
-      POSTGRES_USER: admin_user
-      POSTGRES_DB: db 
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_DB: ${POSTGRES_DB}
 #    ports:
 #      - "5432:5432"
     volumes:
       - db-data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
     networks:
       - internal
 
   task-service:
+    build: ./task-service
     image: task-service
     container_name: task-service
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://micro-services-db:5432/db
-      SPRING_DATASOURCE_PASSWORD: password
-      SPRING_DATASOURCE_USERNAME: admin_user
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
       SPRING_SQL_INIT_MODE: always
       SPRING_PROFILES_ACTIVE: prod
@@ -29,30 +36,35 @@ services:
 #     - "4000:4000" 
     restart: unless-stopped
     depends_on:
-      - micro-services-db
+      micro-services-db:
+        condition: service_healthy
+
     networks:
       - internal
 
   auth-service:
+    build: ./auth-service
     image: auth-service
     container_name: auth-service
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://micro-services-db:5432/db
-      SPRING_DATASOURCE_PASSWORD: password
-      SPRING_DATASOURCE_USERNAME: admin_user
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
       SPRING_SQL_INIT_MODE: always
-      JWT_SECRET: c2e98e7643dbece36dd18964a46757ea9301036b6dddd31f6625b9d559508406
+      JWT_SECRET: ${JWT_SECRET}
       SPRING_PROFILES_ACTIVE: prod
 #   ports:
 #     - "4005:4005" 
     restart: unless-stopped
     depends_on:
-      - micro-services-db
+      micro-services-db:
+        condition: service_healthy
     networks:
       - internal
 
   api-gateway:
+    build: ./api-gateway
     image: api-gateway
     container_name: api-gateway
     environment:
@@ -62,9 +74,12 @@ services:
       - "4004:4004" 
     restart: unless-stopped
     depends_on:
-      - micro-services-db
-      - auth-service
-      - task-service
+      micro-services-db:
+        condition: service_healthy
+      auth-service:
+        condition: service_started
+      task-service:
+        condition: service_started
     networks:
       - internal
 

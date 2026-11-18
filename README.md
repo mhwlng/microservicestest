@@ -40,7 +40,7 @@ There is also an end-to-end integration test project
 
 ### Note that sensitive information like JWT secret, postgres user/password are only included for testing. 
 
-### Normally these would not be part of a github repository (e.g. hardcoded account in integration tests, docker-compose.xml, application.properties)
+### Normally these would not be part of a github repository (e.g. hardcoded account in integration tests, .env file, application.properties)
 
 ---
 
