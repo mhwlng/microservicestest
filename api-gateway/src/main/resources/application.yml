@@ -23,7 +23,7 @@ management:
       show-details: never
   info:
     env:
-      enabled: true
+      enabled: false
   # health:
   #   defaults:
   #     enabled: false

@@ -52,12 +52,14 @@ There are 4 services, each with their own docker container:
   When testing outside docker, an H2 in memory database will be used.
 
 
-docker-compose.yaml will build all 4 containers:
+docker-compose.yaml will build all 4 production containers:
 
 - docker compose down
 - docker compose up -d
 
-There is also an end-to-end integration test project 
+A testuser@test.com user account will still be added to the postgres database. This is only for testing.
+
+There is also an end-to-end integration test project:
 
 - integration-tests
 
