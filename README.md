@@ -13,21 +13,49 @@ There are 4 services, each with their own docker container:
 
   Generates JWT tokens, only accessible inside docker, via auth-service:4005
 
-  There is no functionality to add a new account.
+  There is no functionality to add a new account. (This is only for testing)
 
   The auth-service automatically creates one record in the users table for testuser@test.com 
 
-  There is one account stored in the postgres database: testuser@test.com password123
+  There is one account stored in the database: testuser@test.com password123
+
+  when testing outside docker, swagger and openapi v3 endpoints are available:
+
+  http://localhost:4005/swagger-ui/index.html
+
+  http://localhost:4005/v3/api-docs
+
+  When testing outside docker, an H2 in memory database will be used. A console is available:
+
+  http://localhost:4005/h2-console
 
 - task-service 
 
   Only accessible inside docker via task-service:4000
 
   Simulates a todo list, stored in the database with id, title, description, completed and created fields.
-   
+
+  when testing outside docker, swagger and openapi v3 endpoints are available:
+
+  http://localhost:4000/swagger-ui/index.html
+
+  http://localhost:4000/v3/api-docs
+
+  When testing outside docker, an H2 in memory database will be used. A console is available:
+
+  http://localhost:4000/h2-console
+
 - micro-services-db 
 
   Postgres database, only accessible inside docker via micro-services-db:5432
+
+  When testing outside docker, an H2 in memory database will be used.
+
+
+docker-compose.yaml will build all 4 containers:
+
+- docker compose down
+- docker compose up -d
 
 There is also an end-to-end integration test project 
 

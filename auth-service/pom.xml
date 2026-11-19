@@ -79,6 +79,12 @@
       <version>3.0.2</version>
     </dependency>
 
+  <dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-h2console</artifactId>
+  </dependency>
+
+
 	<dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
@@ -168,6 +174,12 @@
             <spring-boot.run.profiles>prod</spring-boot.run.profiles>
         </properties>
     </profile>    
+    <profile>
+        <id>testdb</id>
+        <properties>
+            <spring-boot.run.profiles>testdb</spring-boot.run.profiles>
+        </properties>
+    </profile>     
   </profiles>
 
 </project>
