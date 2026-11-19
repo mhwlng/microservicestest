@@ -57,7 +57,7 @@ docker-compose.yaml will build all 4 production containers:
 - docker compose down
 - docker compose up -d
 
-A testuser@test.com user account will still be added to the postgres database. This is only for testing.
+  A testuser@test.com user account will still be added to the postgres database. This is only for testing.
 
 There is also an end-to-end integration test project:
 
