@@ -2,7 +2,6 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.notNullValue;
 
 import io.restassured.RestAssured;
-import io.restassured.response.Response;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -22,7 +21,7 @@ public class AuthIntegrationTest {
           }
         """;
 
-    Response response = given()
+   String token = given()
         .contentType("application/json")
         .body(loginPayload)
         .when()
@@ -31,9 +30,21 @@ public class AuthIntegrationTest {
         .statusCode(200)
         .body("token", notNullValue())
         .extract()
-        .response();
+        .response()
+        .jsonPath()
+        .getString("token");
 
-    System.out.println("Generated Token: " + response.jsonPath().getString("token"));
+    System.out.println("TEST: Generated Token: " + token);
+
+    given()
+        .header("Authorization", "Bearer " + token)
+        .when()
+        .get("/auth/validate")
+        .then()
+        .log()
+        .ifValidationFails()
+        .statusCode(200);
+
   }
 
   @Test
