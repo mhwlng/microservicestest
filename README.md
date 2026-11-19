@@ -49,7 +49,7 @@ There are 4 services, each with their own docker container:
 
   Postgres database, only accessible inside docker via micro-services-db:5432
 
-  When testing outside docker, an H2 in memory database will be used.
+  When testing outside docker, the auth-service and task-service will use an H2 in memory database instead of this postgress database.
 
 
 docker-compose.yaml will build all 4 production containers:
