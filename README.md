@@ -114,16 +114,6 @@ http://localhost:4004/api/tasks/{id} (PUT)
 
 http://localhost:4004/api/tasks/{id} (DELETE)
 
-## Get tasks by completion status
-
-http://localhost:4004/api/tasks/completed/{status} (GET)
-
-## Search tasks by title
-
-http://localhost:4004/api/tasks/search-by-title (GET)
-
-has request parameter: 'title'
-
 ## Search tasks
 
 http://localhost:4004/api/tasks/search (GET)

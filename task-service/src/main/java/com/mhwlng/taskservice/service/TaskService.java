@@ -41,12 +41,14 @@ public class TaskService {
         return taskRepository.findByCompleted(completed, pageable);
     }
 
-    public List<Task> getAllTasks() {
-        return taskRepository.findAll();
-    }
-
     public Page<Task> getAllTasks(Pageable pageable) {
         return taskRepository.findAll(pageable);
+    }
+
+    public Page<TaskResponseDTO> getTasksByCompletionStatus(boolean status,
+                                                         Pageable pageable) {
+        final Page<Task> completedTasks = taskRepository.findByCompleted(status, pageable);
+        return completedTasks.map(taskMapper::toResponse);
     }
 
     public TaskResponseDTO getTaskById(Long id) {
@@ -75,24 +77,6 @@ public class TaskService {
         taskRepository.delete(task);
     }
 
-    public List<TaskResponseDTO> getTasksByCompletionStatus(boolean status) {
-        final List<Task> completedTasks = taskRepository.findByCompleted(status);
-        return completedTasks.stream()
-                .map(taskMapper::toResponse)
-                .toList();
-    }
 
-    public Page<TaskResponseDTO> getTasksByCompletionStatus(boolean status,
-                                                         Pageable pageable) {
-        final Page<Task> completedTasks = taskRepository.findByCompleted(status, pageable);
-        return completedTasks.map(taskMapper::toResponse);
-    }
-
-    public List<TaskResponseDTO> searchTasksByTitle(String title) {
-        List<Task> tasks = taskRepository.findByTitleContainingIgnoreCase(title);
-        return tasks.stream()
-                .map(taskMapper::toResponse)
-                .toList();
-    }
 
 }

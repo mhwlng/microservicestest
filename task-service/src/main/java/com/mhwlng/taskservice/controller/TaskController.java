@@ -101,19 +101,8 @@ public class TaskController {
         return ResponseEntity.ok().build();
     }
 
-    @Operation(summary = "Get tasks by completion status")
-    @GetMapping("/completed/{status}")
-    public List<TaskResponseDTO> getTasksByCompletions(@PathVariable boolean status) {
-        return taskService.getTasksByCompletionStatus(status);
-    }
 
-    @Operation(summary = "Search tasks by title")
-    @GetMapping("/search-by-title")
-    public List<TaskResponseDTO> searchTasksByTitle(@RequestParam String title) {
-        return taskService.searchTasksByTitle(title);
-    }
-
-        @Operation(summary = "Search tasks")
+    @Operation(summary = "Search tasks")
     @GetMapping("/search")
     public ResponseEntity<Map<String, Object>> searchTasks(
             @RequestParam(required = false) String title,
