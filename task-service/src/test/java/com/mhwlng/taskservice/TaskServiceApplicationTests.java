@@ -15,9 +15,6 @@ import static org.hamcrest.Matchers.notNullValue;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.List;
-
-
 @ActiveProfiles("testdb")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 class TaskServiceApplicationTests {
@@ -63,7 +60,6 @@ class TaskServiceApplicationTests {
     String id = given()
         .contentType("application/json")
         .body(payload)
-        .when()
         .post("/api/v1/tasks")
         .then()
         .statusCode(201)
@@ -78,7 +74,7 @@ class TaskServiceApplicationTests {
     //GET /api/v1/tasks/$ID
 
     String title = given()
-        .when()
+        .contentType("application/json")
         .get("/api/v1/tasks/" + id)
         .then()
         .statusCode(200)
@@ -95,7 +91,6 @@ class TaskServiceApplicationTests {
     String title2 = given()
         .contentType("application/json")
         .body(payload2)
-        .when()
         .put("/api/v1/tasks/" + id)
         .then()
         .statusCode(200)
@@ -109,7 +104,7 @@ class TaskServiceApplicationTests {
 
     //GET /api/v1/tasks
     String title3 = given()
-        .when()
+        .contentType("application/json")
         .get("/api/v1/tasks")
         .then()
         .statusCode(200)
@@ -123,7 +118,7 @@ class TaskServiceApplicationTests {
     //SEARCH /api/v1/tasks/search
 
     String title4 = given()
-        .when()
+        .contentType("application/json")
         .queryParam("title","testtitle2")
         .get("/api/v1/tasks/search")
         .then()
@@ -138,7 +133,6 @@ class TaskServiceApplicationTests {
     //DELETE /api/v1/tasks/$ID
 
     given()
-        .when()
         .delete("/api/v1/tasks/" + id)
         .then()
         .statusCode(200);

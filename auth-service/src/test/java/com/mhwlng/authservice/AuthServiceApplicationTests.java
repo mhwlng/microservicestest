@@ -56,7 +56,6 @@ class AuthServiceApplicationTests {
     String token = given()
         .contentType("application/json")
         .body(loginPayload)
-        .when()
         .post("/login")
         .then()
         .statusCode(200)
@@ -70,11 +69,8 @@ class AuthServiceApplicationTests {
 
     given()
         .header("Authorization", "Bearer " + token)
-        .when()
         .get("/validate")
         .then()
-        .log()
-        .ifValidationFails()
         .statusCode(200);
   }
 
@@ -90,7 +86,6 @@ class AuthServiceApplicationTests {
     given()
         .contentType("application/json")
         .body(loginPayload)
-        .when()
         .post("/login")
         .then()
         .statusCode(401);
