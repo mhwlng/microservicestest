@@ -3,7 +3,7 @@ name: microservicestest
 services:
   micro-services-db:
     env_file: ".env"
-    image: postgres:latest
+    image: postgres:18
     container_name: micro-services-db
     environment:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
