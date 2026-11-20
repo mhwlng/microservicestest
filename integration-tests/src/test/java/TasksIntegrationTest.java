@@ -44,7 +44,6 @@ public class TasksIntegrationTest {
     String token = given()
         .contentType("application/json")
         .body(loginPayload)
-        .when()
         .post("/auth/login")
         .then()
         .statusCode(200)

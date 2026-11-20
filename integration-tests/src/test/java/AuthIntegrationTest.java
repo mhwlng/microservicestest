@@ -24,7 +24,6 @@ public class AuthIntegrationTest {
    String token = given()
         .contentType("application/json")
         .body(loginPayload)
-        .when()
         .post("/auth/login")
         .then()
         .statusCode(200)
@@ -38,7 +37,6 @@ public class AuthIntegrationTest {
 
     given()
         .header("Authorization", "Bearer " + token)
-        .when()
         .get("/auth/validate")
         .then()
         .log()
@@ -59,7 +57,6 @@ public class AuthIntegrationTest {
     given()
         .contentType("application/json")
         .body(loginPayload)
-        .when()
         .post("/auth/login")
         .then()
         .statusCode(401);

@@ -33,7 +33,7 @@ There are 4 services, each with their own docker container:
 
   Only accessible inside docker via task-service:4000
 
-  Simulates a todo list, stored in the database with id, title, description, completed and created fields.
+  Simulates a todo list, stored in the database with id, title, description, completed and createdAt fields.
 
   when testing outside docker, swagger and openapi v3 endpoints are available:
 

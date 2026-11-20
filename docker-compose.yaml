@@ -27,9 +27,9 @@ services:
     image: task-service
     container_name: task-service
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://micro-services-db:5432/db
-      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
-      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
+      SPRING_DATASOURCE_URL: jdbc:postgresql://micro-services-db:5432/${SPRING_DATASOURCE_DB}
+      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
       SPRING_SQL_INIT_MODE: always
       SPRING_PROFILES_ACTIVE: prod
@@ -54,9 +54,9 @@ services:
     image: auth-service
     container_name: auth-service
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://micro-services-db:5432/db
-      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
-      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
+      SPRING_DATASOURCE_URL: jdbc:postgresql://micro-services-db:5432/${SPRING_DATASOURCE_DB}
+      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
       SPRING_SQL_INIT_MODE: always
       JWT_SECRET: ${JWT_SECRET}
