@@ -66,7 +66,9 @@ There is also an end-to-end integration test project:
   This is a standalone project, using rest-assured 5 and junit 6.
   Use 'test runner for java vscode extension' to run tests.
    
-  this command line runs the tests: mvn -f integration-tests/pom.xml test
+  this command line runs the tests: 
+  
+  mvn -f integration-tests/pom.xml test
 
 ---
 
@@ -82,26 +84,32 @@ There is also an end-to-end integration test project:
 
 http://localhost:4004/auth/login (POST)
 
-IN:
+#### Body:
+```json
 {
     "email":"testuser@test.com",
     "password":"password123"
 }
+```
 
-OUT:
+#### Response:
+```json
 {
     "token": "eyJhbGc............10Zy-E"
 }
+```
 
 ## validate JWT
 
 http://localhost:4004/auth/validate (GET)
 
-IN:
+#### Header:
+
 bearer token header
 
-OUT:
-200 ok
+#### Response:
+
+Code 200 OK
 
 
 ### For these endpoints, add Bearer Token header, requested previously
@@ -112,22 +120,62 @@ http://localhost:4004/api/tasks (GET)
 
 Has request parameters: page, size, createdAt, sortDir
 
+#### Response:
+
+```json
+{
+    "totalItems": 2,
+    "totalPages": 1,
+    "hasPrevious": false,
+    "hasNext": false,
+    "currentPage": 0,
+    "tasks": [
+        {
+            "id": 2,
+            "title": "task 1",
+            "description": "task a description",
+            "completed": true,
+            "createdAt": "2026-11-20T10:20:24.232587"
+        },
+        {
+            "id": 2,
+            "title": "task 2",
+            "description": "task b description",
+            "completed": true,
+            "createdAt": "2026-11-20T10:19:50.616022"
+        }
+    ]
+}
+```
+
 ## Get task by id
 
 http://localhost:4004/api/tasks/{id} (GET)
 
-## Create a task
-
-http://localhost:4004/api/tasks (POST)
-
-IN:
+#### Response:
+```json
 {
     "title":"task 1",
     "description": "task a description",
     "completed":false
 }
+```
 
-OUT:
+## Create a task
+
+http://localhost:4004/api/tasks (POST)
+
+#### Body:
+```json
+{
+    "title":"task 1",
+    "description": "task a description",
+    "completed":false
+}
+```
+
+#### Response:
+```json
 {
     "id": 3,
     "title": "task 1",
@@ -135,17 +183,71 @@ OUT:
     "completed": false,
     "createdAt": "2026-11-14T09:58:27.005775193"
 }
+```
 
 ## Update task
 
 http://localhost:4004/api/tasks/{id} (PUT)
 
+#### Body:
+```json
+{
+    "title":"task 5",
+    "description": "task c description",
+    "completed":false
+}
+```
+
+#### Response:
+```json
+{
+    "id": 3,
+    "title": "task 5",
+    "description": "task c description",
+    "completed": false,
+    "createdAt": "2026-11-14T09:58:27.005775193"
+}
+```
+
 ## Delete task
 
 http://localhost:4004/api/tasks/{id} (DELETE)
+
+#### Response:
+
+Code 200 OK
 
 ## Search tasks
 
 http://localhost:4004/api/tasks/search (GET)
 
 Has request parameters: title, complete, page, size, createdAt, sortDir
+
+#### Response:
+
+```json
+{
+    "totalItems": 2,
+    "totalPages": 1,
+    "hasPrevious": false,
+    "hasNext": false,
+    "currentPage": 0,
+    "tasks": [
+        {
+            "id": 2,
+            "title": "task 1",
+            "description": "task a description",
+            "completed": true,
+            "createdAt": "2026-11-20T10:20:24.232587"
+        },
+        {
+            "id": 2,
+            "title": "task 2",
+            "description": "task b description",
+            "completed": true,
+            "createdAt": "2026-11-20T10:19:50.616022"
+        }
+    ]
+}
+```
+
