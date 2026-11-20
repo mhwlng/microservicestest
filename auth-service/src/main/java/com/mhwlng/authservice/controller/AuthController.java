@@ -5,9 +5,11 @@ import com.mhwlng.authservice.dto.LoginResponseDTO;
 import com.mhwlng.authservice.service.AuthService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.Valid;
 
 import java.util.Optional;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,7 +45,7 @@ public class AuthController {
   @Operation(summary = "Validate Token")
   @GetMapping("/validate")
   public ResponseEntity<Void> validateToken(
-      @RequestHeader("Authorization") String authHeader) {
+        @Parameter(hidden = true) @RequestHeader(value ="Authorization", required = true) String authHeader) {
 
     // Authorization: Bearer <token>
     if(authHeader == null || !authHeader.startsWith("Bearer ")) {

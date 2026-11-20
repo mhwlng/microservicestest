@@ -3,12 +3,9 @@ package com.mhwlng.taskservice.controller;
 import com.mhwlng.taskservice.dto.TaskPageResponseDTO;
 import com.mhwlng.taskservice.dto.TaskRequestDTO;
 import com.mhwlng.taskservice.dto.TaskResponseDTO;
-import com.mhwlng.taskservice.entity.Task;
-import com.mhwlng.taskservice.mapper.TaskMapper;
 import com.mhwlng.taskservice.service.TaskService;
 import jakarta.validation.Valid;
 //import org.apache.coyote.Response;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -25,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 
 @RestController // @Controller and @ResponseBody
 @RequestMapping("/api/v1/tasks")
@@ -39,10 +37,10 @@ public class TaskController {
     @Operation(summary = "Get all tasks")
     @GetMapping
     public ResponseEntity<TaskPageResponseDTO> getAllTasks(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "createdAt") String sortBy,
-            @RequestParam(defaultValue = "DESC") String sortDir) {
+            @Parameter(description = "Zero-based index of the page") @RequestParam(defaultValue = "0") int page,
+            @Parameter(description = "Maximum number of tasks on a page") @RequestParam(defaultValue = "10") int size,
+            @Parameter(description = "Field name to sort by") @RequestParam(defaultValue = "createdAt") String sortBy,
+            @Parameter(description = "Sort direction (DESC/ASC)") @RequestParam(defaultValue = "DESC") String sortDir) {
         Sort sort = sortDir.equalsIgnoreCase("ASC") ?
                 Sort.by(sortBy).ascending() :
                 Sort.by(sortBy).descending();
@@ -85,12 +83,12 @@ public class TaskController {
     @Operation(summary = "Search tasks")
     @GetMapping("/search")
     public ResponseEntity<TaskPageResponseDTO> searchTasks(
-            @RequestParam(required = false) String title,
-            @RequestParam(required = false) Boolean completed,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "createdAt") String sortBy,
-            @RequestParam(defaultValue = "DESC") String sortDir) {
+            @Parameter(description = "search by title (substring, case insensitive)")@RequestParam(required = false) String title,
+            @Parameter(description = "search by completed field (true/false)")  @RequestParam(required = false) Boolean completed,
+            @Parameter(description = "Zero-based index of the page") @RequestParam(defaultValue = "0") int page,
+            @Parameter(description = "Maximum number of tasks on a page") @RequestParam(defaultValue = "10") int size,
+            @Parameter(description = "Field name to sort by") @RequestParam(defaultValue = "createdAt") String sortBy,
+            @Parameter(description = "Sort direction (DESC/ASC)")  @RequestParam(defaultValue = "DESC") String sortDir) {
         Sort sort = sortDir.equalsIgnoreCase("ASC") ?
                 Sort.by(sortBy).ascending() :
                 Sort.by(sortBy).descending();
