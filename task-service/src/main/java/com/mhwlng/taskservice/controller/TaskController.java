@@ -1,5 +1,6 @@
 package com.mhwlng.taskservice.controller;
 
+import com.mhwlng.taskservice.dto.TaskPageResponseDTO;
 import com.mhwlng.taskservice.dto.TaskRequestDTO;
 import com.mhwlng.taskservice.dto.TaskResponseDTO;
 import com.mhwlng.taskservice.entity.Task;
@@ -25,9 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.Operation;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController // @Controller and @ResponseBody
 @RequestMapping("/api/v1/tasks")
@@ -43,7 +42,7 @@ public class TaskController {
 
     @Operation(summary = "Get all tasks")
     @GetMapping
-    public ResponseEntity<Map<String, Object>> getAllTasks(
+    public ResponseEntity<TaskPageResponseDTO> getAllTasks(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "createdAt") String sortBy,
@@ -60,13 +59,7 @@ public class TaskController {
                 .map(task -> taskMapper.toResponse(task))
                 .toList();
 
-        Map<String, Object> response = new HashMap<>();
-        response.put("tasks", tasks);
-        response.put("currentPage", taskPage.getNumber());
-        response.put("totalItems", taskPage.getTotalElements());
-        response.put("totalPages", taskPage.getTotalPages());
-        response.put("hasNext", taskPage.hasNext());
-        response.put("hasPrevious", taskPage.hasPrevious());
+        TaskPageResponseDTO response = taskMapper.updateTaskPageResponseFromRequest(tasks,taskPage);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -102,7 +95,7 @@ public class TaskController {
 
     @Operation(summary = "Search tasks")
     @GetMapping("/search")
-    public ResponseEntity<Map<String, Object>> searchTasks(
+    public ResponseEntity<TaskPageResponseDTO> searchTasks(
             @RequestParam(required = false) String title,
             @RequestParam(required = false) Boolean completed,
             @RequestParam(defaultValue = "0") int page,
@@ -137,13 +130,7 @@ public class TaskController {
                 .map(task -> taskMapper.toResponse(task))
                 .toList();
 
-        Map<String, Object> response = new HashMap<>();
-        response.put("tasks", tasks);
-        response.put("currentPage", taskPage.getNumber());
-        response.put("totalItems", taskPage.getTotalElements());
-        response.put("totalPages", taskPage.getTotalPages());
-        response.put("hasNext", taskPage.hasNext());
-        response.put("hasPrevious", taskPage.hasPrevious());
+        TaskPageResponseDTO response = taskMapper.updateTaskPageResponseFromRequest(tasks,taskPage);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

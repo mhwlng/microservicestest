@@ -118,7 +118,11 @@ Code 200 OK
 
 http://localhost:4004/api/tasks (GET)
 
-Has request parameters: page, size, createdAt, sortDir
+Has query parameters:
+- page
+- size
+- createdAt
+- sortDir
 
 #### Response:
 
@@ -221,7 +225,13 @@ Code 200 OK
 
 http://localhost:4004/api/tasks/search (GET)
 
-Has request parameters: title, complete, page, size, createdAt, sortDir
+Has query parameters: 
+- title
+- completed
+- page
+- size
+- createdAt
+- sortDir
 
 #### Response:
 
