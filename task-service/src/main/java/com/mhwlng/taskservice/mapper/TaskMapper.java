@@ -36,10 +36,14 @@ public class TaskMapper {
         task.setTitle(request.title());
         task.setDescription(request.description());
         task.setCompleted(request.completed());
-
     }
 
-    public TaskPageResponseDTO updateTaskPageResponseFromRequest(List<TaskResponseDTO> tasks, Page<Task> taskPage) {
+    public TaskPageResponseDTO taskPageToTaskPageResponseDTO(Page<Task> taskPage) {
+
+      List<TaskResponseDTO> tasks = taskPage.getContent()
+              .stream()
+              .map(task -> this.toResponse(task))
+              .toList();
 
       return TaskPageResponseDTO.builder()
                 .currentPage(taskPage.getNumber())

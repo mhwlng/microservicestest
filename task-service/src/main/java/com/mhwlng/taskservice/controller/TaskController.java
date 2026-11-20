@@ -26,18 +26,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.Operation;
 
-import java.util.List;
-
 @RestController // @Controller and @ResponseBody
 @RequestMapping("/api/v1/tasks")
 public class TaskController {
 
     private final TaskService taskService;
-    private final TaskMapper taskMapper;
 
-    public TaskController(TaskService taskService,TaskMapper taskMapper) {
+    public TaskController(TaskService taskService) {
         this.taskService = taskService;
-        this.taskMapper = taskMapper;
     }
 
     @Operation(summary = "Get all tasks")
@@ -52,16 +48,9 @@ public class TaskController {
                 Sort.by(sortBy).descending();
 
         Pageable pageable = PageRequest.of(page, size, sort);
-        Page<Task> taskPage = taskService.getAllTasks(pageable);
+        TaskPageResponseDTO taskPage = taskService.getAllTasks(pageable);
 
-        List<TaskResponseDTO> tasks = taskPage.getContent()
-                .stream()
-                .map(task -> taskMapper.toResponse(task))
-                .toList();
-
-        TaskPageResponseDTO response = taskMapper.updateTaskPageResponseFromRequest(tasks,taskPage);
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return new ResponseEntity<>(taskPage, HttpStatus.OK);
     }
 
 
@@ -108,7 +97,7 @@ public class TaskController {
 
         Pageable pageable = PageRequest.of(page, size, sort);
 
-        Page<Task> taskPage;
+        TaskPageResponseDTO taskPage;
 
         if (title != null && completed != null) {
             // Filter by both
@@ -125,14 +114,7 @@ public class TaskController {
             taskPage = taskService.getAllTasks(pageable);
         }
 
-        List<TaskResponseDTO> tasks = taskPage.getContent()
-                .stream()
-                .map(task -> taskMapper.toResponse(task))
-                .toList();
-
-        TaskPageResponseDTO response = taskMapper.updateTaskPageResponseFromRequest(tasks,taskPage);
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return new ResponseEntity<>(taskPage, HttpStatus.OK);
     }
 
 }

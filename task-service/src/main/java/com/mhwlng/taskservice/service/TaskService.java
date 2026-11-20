@@ -1,5 +1,6 @@
 package com.mhwlng.taskservice.service;
 
+import com.mhwlng.taskservice.dto.TaskPageResponseDTO;
 import com.mhwlng.taskservice.dto.TaskRequestDTO;
 import com.mhwlng.taskservice.dto.TaskResponseDTO;
 import com.mhwlng.taskservice.entity.Task;
@@ -24,23 +25,29 @@ public class TaskService {
         this.taskMapper = taskMapper;
     }
 
-    public Page<Task> searchTasksByTitle(String title, Pageable pageable) {
-        return taskRepository.findByTitleContainingIgnoreCase(title, pageable);
-    }
+    public TaskPageResponseDTO searchTasksByTitle(String title, Pageable pageable) {
+        Page<Task> page = taskRepository.findByTitleContainingIgnoreCase(title, pageable);
 
-    public Page<Task> searchTasksByTitleAndCompletion(String title,
+        return taskMapper.taskPageToTaskPageResponseDTO(page);
+   }
+
+    public TaskPageResponseDTO searchTasksByTitleAndCompletion(String title,
                                                       Boolean completed,
                                                       Pageable pageable) {
-        return taskRepository.findByTitleContainingAndCompleted(title,
+        Page<Task> page = taskRepository.findByTitleContainingAndCompleted(title,
                 completed, pageable);
+
+        return taskMapper.taskPageToTaskPageResponseDTO(page);
     }
 
-    public Page<Task> getTasksByCompletion(Boolean completed, Pageable pageable) {
-        return taskRepository.findByCompleted(completed, pageable);
+    public TaskPageResponseDTO getTasksByCompletion(Boolean completed, Pageable pageable) {
+        Page<Task> page = taskRepository.findByCompleted(completed, pageable);
+        return taskMapper.taskPageToTaskPageResponseDTO(page);
     }
 
-    public Page<Task> getAllTasks(Pageable pageable) {
-        return taskRepository.findAll(pageable);
+    public TaskPageResponseDTO getAllTasks(Pageable pageable) {
+        Page<Task> page = taskRepository.findAll(pageable);
+        return taskMapper.taskPageToTaskPageResponseDTO(page);
     }
 
     public Page<TaskResponseDTO> getTasksByCompletionStatus(boolean status,
